@@ -13,6 +13,7 @@ return {
         "lua_ls",        -- Lua
         "pyright",       -- Python
         "clangd",        -- c y c++
+        "bashls",        -- Bash
       },
     })
 
@@ -29,10 +30,11 @@ return {
     -- Configurar cada servidor LSP
     local servers = {
       lua_ls = { settings = { Lua = { telemetry = { enable = false } } } },
-      tailwindcss = {},
       pyright = {}, -- Python
       clangd = { -- Configuración para C y C++
         cmd = { "clangd", "--background-index", "--clang-tidy" },},
+      bashls = { -- Bash
+        filetypes = { "sh", "bash", "zsh" },},
     }
 
     for server, config in pairs(servers) do
