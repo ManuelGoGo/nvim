@@ -13,6 +13,7 @@ return {
         "lua_ls",        -- Lua
         "pyright",       -- Python
         "clangd",        -- c y c++
+        "sqls",          --Sqls
         "bashls",        -- Bash
       },
     })
@@ -30,11 +31,37 @@ return {
     -- Configurar cada servidor LSP
     local servers = {
       lua_ls = { settings = { Lua = { telemetry = { enable = false } } } },
-      pyright = {}, -- Python
+      pyright = {
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = "strict", -- Cambiar a "basic" si quieres menos estricta
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },}, -- Python
       clangd = { -- Configuración para C y C++
         cmd = { "clangd", "--background-index", "--clang-tidy" },},
       bashls = { -- Bash
         filetypes = { "sh", "bash", "zsh" },},
+      sqls = {  -- Configuración específica para SQL
+        on_attach = function(client, bufnr)
+          on_attach(client, bufnr)
+          local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+          buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+        end,
+        settings = {
+          sqls = {
+            connections = {
+              {
+                driver = "mysql",     -- O "postgresql" si usas PostgreSQL
+                dataSourceName = "root:password@tcp(127.0.0.1:3306)/database_name",
+              },
+            },
+          },
+        },
+      },
     }
 
     for server, config in pairs(servers) do
