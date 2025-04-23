@@ -55,7 +55,7 @@ return {
           sqls = {
             connections = {
               {
-                driver = "mysql",     -- O "postgresql" si usas PostgreSQL
+                driver = "postgresql",     -- O "postgresql" si usas PostgreSQL
                 dataSourceName = "root:password@tcp(127.0.0.1:3306)/database_name",
               },
             },
